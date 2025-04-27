@@ -15,6 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      position: relative;
     }
 
     .container {
@@ -24,9 +25,10 @@
       background-color: #fff;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
-      padding: 20px;
+      padding: 30px;
       max-width: 1000px;
       width: 100%;
+      height: auto;
     }
 
     .left-side {
@@ -37,36 +39,85 @@
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       text-align: left;
       color: #fff;
+      position: relative;
       transition: all 0.3s ease;
+    }
+
+    .left-side.hidden {
+      display: none;
     }
 
     .right-side {
       width: 70%;
       padding: 20px;
       text-align: center;
+      position: relative;
     }
 
     iframe {
       width: 100%;
-      height: 400px;
+      height: 350px;
       border: none;
       border-radius: 8px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
 
+    .model-select {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      color: #333;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .model-select:hover {
+      background-color: #f0f0f0;
+      border-color: #3498db;
+    }
+
+    .model-select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 22px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .controls-container {
+      display: none;
+      background: #bdc3c7;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-left: auto;
+      display: inline-block;
+    }
+
     .controls {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 10px;
     }
 
     .color-circle {
-      width: 45px;
-      height: 45px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       cursor: pointer;
-      border: 2px solid #ccc;
+      background-color: #3498db;
+      border: 2px solid transparent;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -79,32 +130,17 @@
       background-color: #3498db;
     }
 
-    .red {
-      background-color: #e74c3c;
+    .white {
+      background-color: #ffffff;
+      border: 2px solid #3498db;
+    }
+
+    .green {
+      background-color: #2ecc71;
     }
 
     .active {
       border: 4px solid #f1c40f;
-    }
-
-    h1 {
-      font-size: 32px;
-      color: #333;
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
-    h2 {
-      font-size: 24px;
-      color: #fff;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-
-    p {
-      font-size: 16px;
-      color: #f0f0f0;
-      line-height: 1.5;
     }
 
     /* Mobile styles only */
@@ -119,7 +155,7 @@
         width: 90%;
         max-width: 90%;
         position: fixed;
-        top: 30vh; /* Adjusted to have space from the top */
+        top: 30vh;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
@@ -161,6 +197,31 @@
         z-index: 1001;
       }
 
+      /* Smart Labs Button - Only on Mobile */
+      .smart-labs-btn {
+        position: fixed;
+        bottom: 10px;
+        left: 20px;
+        background: #3498db;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        z-index: 1001;
+      }
+
+      .smart-labs-btn:hover {
+        background-color: #2980b9;
+      }
+
+      /* Show Smart Labs Button only on mobile */
+      .smart-labs-btn {
+        display: block;
+      }
+
       .close-btn {
         position: absolute;
         top: 10px;
@@ -173,7 +234,12 @@
 
     /* Desktop only */
     @media (min-width: 769px) {
-      .toggle-button, .close-btn {
+      .toggle-button, .smart-labs-btn {
+        display: none;
+      }
+
+      /* Hide close button on desktop screens */
+      .close-btn {
         display: none;
       }
     }
@@ -185,67 +251,79 @@
   <div class="left-side" id="leftSide">
     <span class="close-btn" id="closeBtn">&times;</span>
     <h2>Model Information</h2>
-    <p>Select a model on the right to view it. You can switch between different models using the color circles below.</p>
+    <p>Select a model from the dropdown:</p>
+
+    <select class="model-select" id="modelSelect">
+      <option value="87d4972b80734b088f55a729a6c1cad8" title="Model 1">Networking lab</option>
+      <option value="091a2877395c4159b8b70781a83d3fdb" title="Model 2">SoftwareIncubation lab</option>
+      <option value="56f6f70066464c0fbda95c0ad278a2f4" title="Model 3">Multimedia lab</option>
+      <option value="new-unique-id-for-model-4" title="Model 4">Robotics lab</option>
+    </select>
+
+    <!-- Circle buttons container -->
+    <div class="controls-container" id="controlsContainer">
+      <div class="controls">
+        <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
+        <div class="color-circle white" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
+        <div class="color-circle green" data-uid="3e3f3e6fa62e4c06b0f74b768e0200bc" title="Model 3"></div>
+        <div class="color-circle red" data-uid="new-unique-id-for-model-4" title="Model 4"></div>
+      </div>
+    </div>
+
   </div>
 
   <div class="right-side">
     <h1>Sketchfab Model Switcher</h1>
     <iframe id="api-frame" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-
-    <div class="controls">
-      <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
-      <div class="color-circle red" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
-    </div>
   </div>
 </div>
 
-<!-- Button to toggle info panel on mobile -->
-<button class="toggle-button" id="toggleButton">Show Info</button>
+<!-- Smart Labs Button -->
+<button class="smart-labs-btn" id="smartLabsBtn">Select a laboratory</button>
 
 <script>
   const iframe = document.getElementById('api-frame');
-  const colorCircles = document.querySelectorAll('.color-circle');
-  const leftSide = document.getElementById('leftSide');
-  const toggleButton = document.getElementById('toggleButton');
+  const modelSelect = document.getElementById('modelSelect');
+  const controlsContainer = document.getElementById('controlsContainer');
   const closeBtn = document.getElementById('closeBtn');
+  const smartLabsBtn = document.getElementById('smartLabsBtn');
+  const leftSide = document.getElementById('leftSide');
 
-  // Initial model
-  setModelSrc('87d4972b80734b088f55a729a6c1cad8');
-  setActiveCircle('blue');
-
-  colorCircles.forEach(circle => {
-    circle.addEventListener('click', () => {
-      const uid = circle.getAttribute('data-uid');
-      const colorClass = circle.classList.contains('blue') ? 'blue' : 'red';
-      setModelSrc(uid);
-      setActiveCircle(colorClass);
-    });
-  });
-
+  // Function to change the model source
   function setModelSrc(uid) {
     iframe.src = `https://sketchfab.com/models/${uid}/embed?autostart=1`;
   }
 
-  function setActiveCircle(activeColor) {
-    colorCircles.forEach(circle => {
-      circle.classList.remove('active');
-    });
-    const activeCircle = document.querySelector(`.${activeColor}`);
-    activeCircle.classList.add('active');
-  }
+  // Set the initial model when the page loads
+  setModelSrc(modelSelect.value);
 
-  toggleButton.addEventListener('click', () => {
-    leftSide.classList.remove('hidden');
+  // Change iframe model based on the selected option
+  modelSelect.addEventListener('change', () => {
+    const selectedModelId = modelSelect.value;
+    setModelSrc(selectedModelId);
+
+    // Show circle buttons only when Model 1 is selected
+    if (selectedModelId === '87d4972b80734b088f55a729a6c1cad8') {
+      controlsContainer.style.display = 'block';  // Show circles for Model 1
+    } else {
+      controlsContainer.style.display = 'none';  // Hide circles for other models
+    }
   });
 
+  // On page load, make sure circles are hidden if not Model 1
+  if (modelSelect.value !== '87d4972b80734b088f55a729a6c1cad8') {
+    controlsContainer.style.display = 'none';
+  }
+
+  // Toggle the left-side panel when Smart Labs button is clicked
+  smartLabsBtn.addEventListener('click', () => {
+    leftSide.classList.toggle('hidden');
+  });
+
+  // Close the left-side panel when close button is clicked
   closeBtn.addEventListener('click', () => {
     leftSide.classList.add('hidden');
   });
-
-  // On mobile load, show info panel
-  if (window.innerWidth <= 768) {
-    leftSide.classList.remove('hidden');
-  }
 </script>
 
 </body>
