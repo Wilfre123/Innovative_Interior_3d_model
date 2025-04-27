@@ -13,7 +13,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 50vh;
+      height: 100vh; /* Full screen height */
+      box-sizing: border-box;
     }
 
     .container {
@@ -21,14 +22,14 @@
       background-color: #fff;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
-      padding: 10px;
-      width: 80%; /* More compact width */
-      max-width: 700px; /* Adjusted to a smaller size */
+      padding: 20px;
+      width: 90%; /* Allow it to be more flexible */
+      max-width: 700px; /* Max width for larger screens */
     }
 
     iframe {
       width: 100%;
-      height: 500px; /* Reduced height */
+      height: 450px; /* Default height for iframe */
       border: none;
       border-radius: 8px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -38,12 +39,12 @@
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     .color-circle {
-      width: 50px; /* Slightly smaller size */
-      height: 50px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid #ccc;
@@ -68,20 +69,50 @@
     }
 
     h1 {
-      font-size: 24px; /* Reduced heading size */
+      font-size: 24px;
       color: #333;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    /* Add responsiveness */
+    /* Responsiveness for mobile devices */
     @media (max-width: 768px) {
-      .color-circle {
-        width: 40px; /* Even smaller for mobile devices */
-        height: 40px;
+      body {
+        padding: 10px; /* Add padding for mobile */
+      }
+
+      .container {
+        padding: 15px;
+        width: 95%;
+        max-width: none;
       }
 
       iframe {
-        height: 350px; /* Adjust iframe height for smaller screens */
+        height: 300px; /* Smaller iframe height on smaller screens */
+      }
+
+      .color-circle {
+        width: 50px; /* Smaller circles for mobile */
+        height: 50px;
+      }
+
+      h1 {
+        font-size: 22px; /* Slightly smaller title for mobile */
+      }
+    }
+
+    /* Additional responsiveness for very small screens (phones in portrait) */
+    @media (max-width: 480px) {
+      iframe {
+        height: 250px; /* Adjust height further for very small screens */
+      }
+
+      .color-circle {
+        width: 40px; /* Even smaller circles */
+        height: 40px;
+      }
+
+      h1 {
+        font-size: 20px; /* Smaller title on very small screens */
       }
     }
   </style>
