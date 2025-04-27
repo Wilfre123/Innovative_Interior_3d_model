@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sketchfab Model Switcher</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background-color: #fff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .color-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-circle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .blue {
+      background-color: #3498db;
+    }
+
+    .red {
+      background-color: #e74c3c;
+    }
+
+    .active {
+      border: 4px solid #f1c40f;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    /* Add responsiveness */
+    @media (max-width: 768px) {
+      .color-circle {
+        width: 50px;
+        height: 50px;
+      }
+
+      iframe {
+        height: 450px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Sketchfab Model Switcher</h1>
+
+  <iframe id="api-frame" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+  <div class="controls">
+    <!-- Color circles for model selection -->
+    <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
+    <div class="color-circle red" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
+  </div>
+</div>
+
+<script>
+  const iframe = document.getElementById('api-frame');
+  const colorCircles = document.querySelectorAll('.color-circle');
+
+  // Set the initial model on page load (blue for Model 1 by default)
+  setModelSrc('87d4972b80734b088f55a729a6c1cad8');
+  setActiveCircle('blue');
+
+  // Add click event to color circles
+  colorCircles.forEach(circle => {
+    circle.addEventListener('click', () => {
+      const uid = circle.getAttribute('data-uid');
+      const colorClass = circle.classList.contains('blue') ? 'blue' : 'red';
+      
+      setModelSrc(uid);
+      setActiveCircle(colorClass);
+    });
+  });
+
+  // Function to set the model in the iframe with autoplay enabled
+  function setModelSrc(uid) {
+    iframe.src = `https://sketchfab.com/models/${uid}/embed?autostart=1`;
+  }
+
+  // Function to highlight the active color circle
+  function setActiveCircle(activeColor) {
+    colorCircles.forEach(circle => {
+      circle.classList.remove('active');
+    });
+
+    const activeCircle = document.querySelector(`.${activeColor}`);
+    activeCircle.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
