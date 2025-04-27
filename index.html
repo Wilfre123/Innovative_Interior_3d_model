@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sketchfab Model Switcher</title>
   <style>
-  
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
 
     .container {
       text-align: center;
@@ -13,8 +18,9 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       padding: 30px;
-      max-width: 900px;
-      width: 100%;
+      width: 80%; /* Adjusted width for PC */
+      max-width: 900px; /* Limit maximum width */
+      margin: 30px auto;
       box-sizing: border-box;
     }
 
@@ -107,7 +113,7 @@
     /* For larger screens like laptops and desktops */
     @media (min-width: 1024px) {
       iframe {
-        height: 700px; /* Increase iframe height for laptops and desktops */
+        height: 600px; /* Increase iframe height for laptops and desktops */
       }
     }
 
