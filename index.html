@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sketchfab Model Switcher</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -15,7 +15,6 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      transition: background-color 0.3s ease;
     }
 
     .container {
@@ -28,13 +27,12 @@
       padding: 20px;
       max-width: 1000px;
       width: 100%;
-      transition: padding 0.3s ease;
     }
 
     .left-side {
       width: 25%;
       padding: 20px;
-      background: linear-gradient(to right, #5A8FEC, #7A9AE4); /* Softer blue gradient */
+      background: linear-gradient(to right, #5A8FEC, #7A9AE4);
       border-radius: 8px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       text-align: left;
@@ -109,17 +107,8 @@
       line-height: 1.5;
     }
 
-    /* Add responsiveness */
+    /* Mobile styles only */
     @media (max-width: 768px) {
-      .color-circle {
-        width: 40px;
-        height: 40px;
-      }
-
-      iframe {
-        height: 450px;
-      }
-
       .container {
         flex-direction: column;
         align-items: center;
@@ -127,58 +116,64 @@
       }
 
       .left-side {
-        width: 55%; /* Set width to 55% on mobile */
-        height: auto;
-        margin-top: 10vh;
-        margin-bottom: 50px;
+        width: 90%;
+        max-width: 90%;
+        position: fixed;
+        top: 30vh; /* Adjusted to have space from the top */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
         text-align: center;
         border-radius: 12px;
-        position: fixed;
-        top: 0;
-        left: 50%; /* Center horizontally */
-        transform: translateX(-50%); /* Center the div exactly */
-        transition: left 0.3s ease; /* Smooth transition */
-        padding: 20px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        z-index: 1000; /* Ensure it stays above other elements */
+        display: block;
+        opacity: 1;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        background: linear-gradient(to right, #1E90FF, #63B3ED);
+      }
+
+      .left-side.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
       }
 
       .right-side {
-        width: 90%;
+        width: 100%;
       }
 
-      h1 {
-        font-size: 28px;
+      iframe {
+        width: 100%;
+        height: 450px;
       }
 
-      h2 {
-        font-size: 20px;
-      }
-
-      p {
-        font-size: 14px;
-      }
-
-      /* Icon for toggling the left div (only on mobile) */
-      .toggle-icon {
+      .toggle-button {
+        display: block;
         position: fixed;
-        top: 20px;
+        bottom: 20px;
         left: 20px;
-        font-size: 30px;
-        color: #3498db;
+        background: linear-gradient(to right, #1E90FF, #63B3ED);
+        color: #fff;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-size: 16px;
         cursor: pointer;
         z-index: 1001;
       }
 
-      /* Hide the toggle icon on desktop */
-      .toggle-icon.desktop {
-        display: none;
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 22px;
+        color: #fff;
+        cursor: pointer;
       }
     }
 
-    /* Hide the toggle icon on desktop screens */
+    /* Desktop only */
     @media (min-width: 769px) {
-      .toggle-icon {
+      .toggle-button, .close-btn {
         display: none;
       }
     }
@@ -188,72 +183,69 @@
 
 <div class="container">
   <div class="left-side" id="leftSide">
+    <span class="close-btn" id="closeBtn">&times;</span>
     <h2>Model Information</h2>
     <p>Select a model on the right to view it. You can switch between different models using the color circles below.</p>
   </div>
 
   <div class="right-side">
     <h1>Sketchfab Model Switcher</h1>
-
     <iframe id="api-frame" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
     <div class="controls">
-      <!-- Color circles for model selection -->
       <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
       <div class="color-circle red" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
     </div>
   </div>
 </div>
 
-<!-- Toggle Icon (Visible only on mobile) -->
-<div class="toggle-icon" id="toggleIcon">&#9776;</div>
+<!-- Button to toggle info panel on mobile -->
+<button class="toggle-button" id="toggleButton">Show Info</button>
 
 <script>
   const iframe = document.getElementById('api-frame');
   const colorCircles = document.querySelectorAll('.color-circle');
   const leftSide = document.getElementById('leftSide');
-  const toggleIcon = document.getElementById('toggleIcon');
+  const toggleButton = document.getElementById('toggleButton');
+  const closeBtn = document.getElementById('closeBtn');
 
-  // Set the initial model on page load (blue for Model 1 by default)
+  // Initial model
   setModelSrc('87d4972b80734b088f55a729a6c1cad8');
   setActiveCircle('blue');
 
-  // Add click event to color circles
   colorCircles.forEach(circle => {
     circle.addEventListener('click', () => {
       const uid = circle.getAttribute('data-uid');
       const colorClass = circle.classList.contains('blue') ? 'blue' : 'red';
-      
       setModelSrc(uid);
       setActiveCircle(colorClass);
     });
   });
 
-  // Function to set the model in the iframe with autoplay enabled
   function setModelSrc(uid) {
     iframe.src = `https://sketchfab.com/models/${uid}/embed?autostart=1`;
   }
 
-  // Function to highlight the active color circle
   function setActiveCircle(activeColor) {
     colorCircles.forEach(circle => {
       circle.classList.remove('active');
     });
-
     const activeCircle = document.querySelector(`.${activeColor}`);
     activeCircle.classList.add('active');
   }
 
-  // Toggle the left-side div visibility when the icon is clicked (only on mobile screens)
-  toggleIcon.addEventListener('click', () => {
-    const isVisible = leftSide.style.left === '50%';
-    
-    if (isVisible) {
-      leftSide.style.left = '150%'; // Slide out
-    } else {
-      leftSide.style.left = '50%'; // Slide in
-    }
+  toggleButton.addEventListener('click', () => {
+    leftSide.classList.remove('hidden');
   });
+
+  closeBtn.addEventListener('click', () => {
+    leftSide.classList.add('hidden');
+  });
+
+  // On mobile load, show info panel
+  if (window.innerWidth <= 768) {
+    leftSide.classList.remove('hidden');
+  }
 </script>
 
 </body>
