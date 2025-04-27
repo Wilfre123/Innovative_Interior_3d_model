@@ -27,6 +27,7 @@
     iframe {
       width: 100%;
       height: 450px; /* Default height for mobile and small screens */
+      max-height: 600px; /* Ensure iframe height doesn't exceed 600px */
       border: none;
       border-radius: 8px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -113,7 +114,12 @@
     /* For larger screens like laptops and desktops */
     @media (min-width: 1024px) {
       iframe {
-        height: 600px; /* Increase iframe height for laptops and desktops */
+        height: 600px; /* Set iframe height for laptops and desktops */
+      }
+
+      /* Ensure container height remains suitable for larger screens */
+      .container {
+        height: auto;
       }
     }
 
