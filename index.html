@@ -4,30 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sketchfab Model Switcher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
       margin: 0;
       padding: 0;
-      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background-color 0.3s ease;
     }
 
     .container {
       text-align: center;
+      display: flex;
+      justify-content: space-between;
       background-color: #fff;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
-      padding: 30px;
-      width: 80%; /* Adjusted width for PC */
-      max-width: 900px; /* Limit maximum width */
-      margin: 30px auto;
-      box-sizing: border-box;
+      padding: 20px;
+      max-width: 1000px;
+      width: 100%;
+      transition: padding 0.3s ease;
+    }
+
+    .left-side {
+      width: 25%;
+      padding: 20px;
+      background: linear-gradient(to right, #5A8FEC, #7A9AE4); /* Softer blue gradient */
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .right-side {
+      width: 70%;
+      padding: 20px;
+      text-align: center;
     }
 
     iframe {
       width: 100%;
-      height: 350px; /* Default height for mobile and small screens */
-      max-height: 600px; /* Ensure iframe height doesn't exceed 600px */
+      height: 400px;
       border: none;
       border-radius: 8px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -36,13 +59,13 @@
     .controls {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       margin-top: 20px;
     }
 
     .color-circle {
-      width: 60px;
-      height: 60px;
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid #ccc;
@@ -67,81 +90,129 @@
     }
 
     h1 {
-      font-size: 28px;
+      font-size: 32px;
       color: #333;
       margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 16px;
+      color: #f0f0f0;
+      line-height: 1.5;
     }
 
     /* Add responsiveness */
     @media (max-width: 768px) {
-      body {
-        height: auto;
-      }
-
       .color-circle {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
       }
 
       iframe {
-        height: 400px; /* Adjust iframe height for smaller screens */
+        height: 450px;
       }
 
-      h1 {
-        font-size: 24px; /* Adjust heading size for mobile */
-      }
-    }
-
-    @media (max-width: 480px) {
-      .color-circle {
-        width: 45px;
-        height: 45px;
-      }
-
-      iframe {
-        height: 350px; /* Adjust iframe height for very small screens */
-      }
-
-      h1 {
-        font-size: 20px; /* Further reduce heading size for very small screens */
-      }
-
-      .controls {
-        gap: 10px; /* Reduce the gap between circles */
-      }
-    }
-
-    /* For larger screens like laptops and desktops */
-    @media (min-width: 1024px) {
-      iframe {
-        height: 600px; /* Set iframe height for laptops and desktops */
-      }
-
-      /* Ensure container height remains suitable for larger screens */
       .container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .left-side {
+        width: 55%; /* Set width to 55% on mobile */
         height: auto;
+        margin-top: 10vh;
+        margin-bottom: 50px;
+        text-align: center;
+        border-radius: 12px;
+        position: fixed;
+        top: 0;
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Center the div exactly */
+        transition: left 0.3s ease; /* Smooth transition */
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 1000; /* Ensure it stays above other elements */
+      }
+
+      .right-side {
+        width: 90%;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      /* Icon for toggling the left div (only on mobile) */
+      .toggle-icon {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        font-size: 30px;
+        color: #3498db;
+        cursor: pointer;
+        z-index: 1001;
+      }
+
+      /* Hide the toggle icon on desktop */
+      .toggle-icon.desktop {
+        display: none;
       }
     }
 
+    /* Hide the toggle icon on desktop screens */
+    @media (min-width: 769px) {
+      .toggle-icon {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Sketchfab Model Switcher</h1>
+  <div class="left-side" id="leftSide">
+    <h2>Model Information</h2>
+    <p>Select a model on the right to view it. You can switch between different models using the color circles below.</p>
+  </div>
 
-  <iframe id="api-frame" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+  <div class="right-side">
+    <h1>Sketchfab Model Switcher</h1>
 
-  <div class="controls">
-    <!-- Color circles for model selection -->
-    <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
-    <div class="color-circle red" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
+    <iframe id="api-frame" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+    <div class="controls">
+      <!-- Color circles for model selection -->
+      <div class="color-circle blue" data-uid="87d4972b80734b088f55a729a6c1cad8" title="Model 1"></div>
+      <div class="color-circle red" data-uid="091a2877395c4159b8b70781a83d3fdb" title="Model 2"></div>
+    </div>
   </div>
 </div>
+
+<!-- Toggle Icon (Visible only on mobile) -->
+<div class="toggle-icon" id="toggleIcon">&#9776;</div>
 
 <script>
   const iframe = document.getElementById('api-frame');
   const colorCircles = document.querySelectorAll('.color-circle');
+  const leftSide = document.getElementById('leftSide');
+  const toggleIcon = document.getElementById('toggleIcon');
 
   // Set the initial model on page load (blue for Model 1 by default)
   setModelSrc('87d4972b80734b088f55a729a6c1cad8');
@@ -172,6 +243,17 @@
     const activeCircle = document.querySelector(`.${activeColor}`);
     activeCircle.classList.add('active');
   }
+
+  // Toggle the left-side div visibility when the icon is clicked (only on mobile screens)
+  toggleIcon.addEventListener('click', () => {
+    const isVisible = leftSide.style.left === '50%';
+    
+    if (isVisible) {
+      leftSide.style.left = '150%'; // Slide out
+    } else {
+      leftSide.style.left = '50%'; // Slide in
+    }
+  });
 </script>
 
 </body>
