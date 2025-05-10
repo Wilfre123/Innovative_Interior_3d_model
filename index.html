@@ -91,37 +91,42 @@
 
     /* Increase the width of the sidebar on small screens */
     @media (max-width: 768px) {
-      .btn-open-panel {
-        font-size: 1rem;
-        padding: 0.5rem 0.8rem;
-      }
+  .btn-open-panel {
+    font-size: 1rem;
+    padding: 0.5rem 0.8rem;
+    right: 1rem; /* Keep some distance from the edge */
+    z-index: 1060; /* Stay above the sidebar */
+  }
 
-      .offcanvas-start {
-        width: 65% !important;  /* Increased width with !important */
-      }
+  .offcanvas-start {
+    width: 75% !important;  /* Slightly increased width */
+    max-width: 300px;        /* Prevent from becoming too wide */
+    z-index: 1055;           /* Ensure it doesn’t cover button */
+  }
 
-      .offcanvas-title {
-        font-size: 0.8rem;
-      }
+  .offcanvas-title {
+    font-size: 0.8rem;
+  }
 
-      iframe {
-        height: calc(100vh - 3rem);
-      }
+  iframe {
+    height: calc(100vh - 3rem);
+  }
 
-      .offcanvas-body {
-        padding: 1rem;
-      }
+  .offcanvas-body {
+    padding: 1rem;
+  }
 
-      .offcanvas .form-select,
-      .offcanvas .form-control-color {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.8rem;
-      }
+  .offcanvas .form-select,
+  .offcanvas .form-control-color {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.8rem;
+  }
 
-      .offcanvas .form-label {
-        font-size: 0.85rem;
-      }
-    }
+  .offcanvas .form-label {
+    font-size: 0.85rem;
+  }
+}
+
   </style>
 </head>
 <body>
