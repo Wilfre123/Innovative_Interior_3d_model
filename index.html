@@ -13,7 +13,6 @@
       margin: 0;
       padding: 0;
     }
-
     .btn-open-panel {
       position: fixed;
       top: 4rem;
@@ -30,103 +29,87 @@
       gap: 0.5rem;
       font-size: 1.2rem;
     }
-
-    /* Sidebar: fixed, narrow, no width animation */
     .offcanvas-start {
       background: linear-gradient(135deg, dodgerblue, #1e90ff, #00bfff);
       color: white;
-      width: 20% !important;  /* Default width */
+      width: 20% !important;
       padding: 1rem;
       transition: transform 0.2s ease, opacity 2.3s ease;
       opacity: 0;
     }
-
     .offcanvas-start.show {
       opacity: 1;
     }
-
     .offcanvas-start .sidebar-header {
       display: flex;
       align-items: center;
     }
-
     .sidebar-header i {
       font-size: 1.5rem;
     }
-
-    /* Always show the title */
     .offcanvas-title {
       font-size: 0.9rem;
       margin-left: 0.5rem;
       white-space: nowrap;
     }
-
     .offcanvas .form-select,
     .offcanvas .form-control-color {
-      background-color: rgba(255, 255, 255, 0.15);
-      color: white;
+      background-color: #ffffff !important;
+      color: #000000 !important;
       border: none;
       border-radius: 10px;
       padding: 0.5rem 1rem;
-      backdrop-filter: blur(6px);
-      transition: all 0.3s ease;
+      font-size: 1rem;
     }
-
+    .offcanvas .form-select:focus,
+    .offcanvas .form-control-color:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+    }
     .offcanvas .form-label {
       color: #fff;
       font-size: 0.85rem;
     }
-
     .offcanvas-header .btn-close {
       border: none;
       background: transparent;
       color: white;
     }
-
     iframe {
       width: 100%;
       height: 100vh;
       border: none;
     }
-
-    /* Increase the width of the sidebar on small screens */
     @media (max-width: 768px) {
-  .btn-open-panel {
-    font-size: 1rem;
-    padding: 0.5rem 0.8rem;
-    right: 1rem; /* Keep some distance from the edge */
-    z-index: 1060; /* Stay above the sidebar */
-  }
-
-  .offcanvas-start {
-    width: 75% !important;  /* Slightly increased width */
-    max-width: 300px;        /* Prevent from becoming too wide */
-    z-index: 1055;           /* Ensure it doesn’t cover button */
-  }
-
-  .offcanvas-title {
-    font-size: 0.8rem;
-  }
-
-  iframe {
-    height: calc(100vh - 3rem);
-  }
-
-  .offcanvas-body {
-    padding: 1rem;
-  }
-
-  .offcanvas .form-select,
-  .offcanvas .form-control-color {
-    font-size: 0.85rem;
-    padding: 0.5rem 0.8rem;
-  }
-
-  .offcanvas .form-label {
-    font-size: 0.85rem;
-  }
-}
-
+      .btn-open-panel {
+        font-size: 1rem;
+        padding: 0.5rem 0.8rem;
+        right: 1rem;
+        z-index: 1060;
+      }
+      .offcanvas-start {
+        width: 75% !important;
+        max-width: 300px;
+        z-index: 1055;
+      }
+      .offcanvas-title {
+        font-size: 0.8rem;
+      }
+      iframe {
+        height: calc(100vh - 3rem);
+      }
+      .offcanvas-body {
+        padding: 1rem;
+      }
+      .offcanvas .form-select,
+      .offcanvas .form-control-color {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
+      }
+      .offcanvas .form-label {
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -137,19 +120,28 @@
 </button>
 
 <!-- Sidebar Panel -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="materialPanel" data-bs-backdrop="false">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="materialPanel" data-bs-backdrop="true" data-bs-scroll="false">
   <div class="offcanvas-header sidebar-header">
     <i class="bi bi-gear-fill"></i>
-    <h5 class="offcanvas-title">Material Settings</h5>
+    <h5 class="offcanvas-title">3D Settings</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <div class="mb-3">
-      <label for="materialSelect" class="form-label"><i class="bi bi-paint-bucket"></i> Material</label>
-      <select id="materialSelect"  class="form-select"></select>
+      <label for="uidSelect" class="form-label"><i class="bi bi-list-check"></i> Select UID</label>
+      <select id="uidSelect" class="form-select">
+        <option value="uid1">UID 1</option>
+        <option value="uid2">UID 2</option>
+        <option value="uid3">UID 3</option>
+        <option value="uid4">UID 4</option>
+      </select>
     </div>
     <div class="mb-3">
-      <label for="colorPicker" class="form-label"><i class="bi bi-palette"></i> Color</label>
+      <label for="materialSelect" class="form-label"><i class="bi bi-list-check"></i> Material</label>
+      <select id="materialSelect" class="form-select"></select>
+    </div>
+    <div class="mb-3">
+      <label for="colorPicker" class="form-label"><i class="bi bi-palette"></i> Color material</label>
       <input type="color" id="colorPicker" class="form-control form-control-color" />
     </div>
   </div>
@@ -157,12 +149,10 @@
 
 <!-- 3D Viewer -->
 <div class="container-fluid p-0">
-  <iframe id="api-frame"
-          src="https://sketchfab.com/models/20a8aa593bed4b9187934f5c82e94c7f/embed"
-          allow="autoplay; fullscreen; xr-spatial-tracking">
-  </iframe>
+  <iframe id="api-frame" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
 </div>
 
+<!-- Scripts -->
 <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
   const iframe = document.getElementById('api-frame');
@@ -170,51 +160,81 @@
   let apiInstance;
   let materialsMap = {};
 
-  client.init('20a8aa593bed4b9187934f5c82e94c7f', {
-    success: function(api) {
-      apiInstance = api;
-      api.start();
+  const uidMap = {
+    uid1: "7b7aa1e0f3154c9e8b31901c4cd7d75f",
+    uid2: "56f6f70066464c0fbda95c0ad278a2f4",
+    uid3: "c3ff52c9efb9450f8c992c4463d1a76a",
+    uid4: "9fe1d5e26a1f48f2856fc40c68b75ad3"
+  };
 
-      api.addEventListener('viewerready', function() {
-        api.getMaterialList(function(err, materials) {
-          if (err) {
-            console.error("Failed to get materials", err);
-            return;
-          }
+  function loadModel(uidKey) {
+    const modelUID = uidMap[uidKey];
+    if (!modelUID) {
+      console.error("Invalid UID:", uidKey);
+      return;
+    }
 
+    client.init(modelUID, {
+      success: function(api) {
+        apiInstance = api;
+        api.start();
+        materialsMap = {};
+
+        api.addEventListener('viewerready', function() {
           const select = document.getElementById("materialSelect");
-          materials.forEach(material => {
-            materialsMap[material.name] = material;
-            const option = document.createElement("option");
-            option.value = material.name;
-            option.text = material.name;
-            select.appendChild(option);
+          select.innerHTML = "";
+
+          api.getMaterialList(function(err, materials) {
+            if (err) {
+              console.error("Failed to get materials", err);
+              return;
+            }
+
+            const allowedMaterials = ['table', 'wall'];
+
+            materials.forEach(material => {
+              if (allowedMaterials.includes(material.name.toLowerCase())) {
+                materialsMap[material.name] = material;
+                const option = document.createElement("option");
+                option.value = material.name;
+                option.text = material.name;
+                select.appendChild(option);
+              }
+            });
           });
         });
+      },
+      error: function() {
+        console.error('Sketchfab API initialization failed');
+      }
+    });
+  }
 
-        document.getElementById("colorPicker").addEventListener("input", function(e) {
-          const selectedMaterialName = document.getElementById("materialSelect").value;
-          const material = materialsMap[selectedMaterialName];
-          if (!material) return;
+  document.getElementById("colorPicker").addEventListener("input", function(e) {
+    const selectedMaterialName = document.getElementById("materialSelect").value;
+    const material = materialsMap[selectedMaterialName];
+    if (!material) return;
 
-          const hex = e.target.value;
-          const rgb = [
-            parseInt(hex.substr(1, 2), 16) / 255,
-            parseInt(hex.substr(3, 2), 16) / 255,
-            parseInt(hex.substr(5, 2), 16) / 255
-          ];
+    const hex = e.target.value;
+    const rgb = [
+      parseInt(hex.substr(1, 2), 16) / 255,
+      parseInt(hex.substr(3, 2), 16) / 255,
+      parseInt(hex.substr(5, 2), 16) / 255
+    ];
 
-          if (material.channels.AlbedoPBR) {
-            material.channels.AlbedoPBR.color = rgb;
-            api.setMaterial(material);
-          }
-        });
-      });
-    },
-    error: function() {
-      console.error('Sketchfab API initialization failed');
+    if (material.channels.AlbedoPBR) {
+      material.channels.AlbedoPBR.color = rgb;
+      apiInstance.setMaterial(material);
     }
   });
+
+  document.getElementById("uidSelect").addEventListener("change", function(e) {
+    const selectedUID = e.target.value;
+    loadModel(selectedUID);
+  });
+
+  // Initial load
+  loadModel("uid1");
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
