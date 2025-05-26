@@ -120,7 +120,7 @@
 </button>
 
 <!-- Sidebar Panel -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="materialPanel" data-bs-backdrop="true" data-bs-scroll="false">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="materialPanel" data-bs-backdrop="false" data-bs-scroll="false">
   <div class="offcanvas-header sidebar-header">
     <i class="bi bi-gear-fill"></i>
     <h5 class="offcanvas-title">3D Settings</h5>
@@ -130,10 +130,10 @@
     <div class="mb-3">
       <label for="uidSelect" class="form-label"><i class="bi bi-list-check"></i> Select UID</label>
       <select id="uidSelect" class="form-select">
-        <option value="uid1">UID 1</option>
-        <option value="uid2">UID 2</option>
-        <option value="uid3">UID 3</option>
-        <option value="uid4">UID 4</option>
+        <option value="uid1">Networking lab</option>
+        <option value="uid2">SoftwareIncubation lab</option>
+        <option value="uid3">Multimedia lab</option>
+        <option value="uid4">Robotics lab</option>
       </select>
     </div>
     <div class="mb-3">
@@ -147,12 +147,10 @@
   </div>
 </div>
 
-<!-- 3D Viewer -->
 <div class="container-fluid p-0">
   <iframe id="api-frame" allow="autoplay; fullscreen; xr-spatial-tracking"></iframe>
 </div>
 
-<!-- Scripts -->
 <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js"></script>
 <script>
   const iframe = document.getElementById('api-frame');
@@ -161,7 +159,7 @@
   let materialsMap = {};
 
   const uidMap = {
-    uid1: "7b7aa1e0f3154c9e8b31901c4cd7d75f",
+    uid1: "fc873bc8b5f2406db231eb825d8dd4ce",
     uid2: "56f6f70066464c0fbda95c0ad278a2f4",
     uid3: "c3ff52c9efb9450f8c992c4463d1a76a",
     uid4: "9fe1d5e26a1f48f2856fc40c68b75ad3"
